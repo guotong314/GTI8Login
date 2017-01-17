@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GTSpec/GTBaseComponent.h>
 
-@interface GTLoginComponent : NSObject
+@interface GTLoginComponent : GTBaseComponent
 
 
 @end
