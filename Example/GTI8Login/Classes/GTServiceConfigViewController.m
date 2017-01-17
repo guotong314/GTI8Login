@@ -101,10 +101,11 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    // 根据本地存储 加载页面
     GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
     UIImage *logoImg = [[GTPhotoCache sharedPhotoCache] imageForKey:[self combineImageURL:companyInfo.companyLogo]];
     self.iconImageView.image = logoImg?:[UIImage imageNamed:[ConfigManage getSystemLogo]];
-    
+    //打开并配置IQKeyboard
     [IQKeyboardManager sharedManager].enable = YES;
     [self configKeyboard];
     
@@ -169,7 +170,7 @@
                 }];
             }];
         }else{
-
+            // 如果用https  请求失败 然后用http再请求
             if (error.userInfo[kDMErrorUserInfoMsgCode] && [serverStr hasPrefix:@"https"]) {
                 NSLog(@"errHttps:%@",error.domain);
                 [GTConfigManage sharedInstance].isHttps = NO;
@@ -234,17 +235,8 @@
 - (GTLoginButton *) configBtn
 {
     if (!_configBtn) {
-//        _configBtn = [[UIButton alloc] init];
-//        _configBtn.backgroundColor = RGBA(81, 81, 81, 1);//[UIColor blackColor];//RGBA(41, 108, 254, 1);
-//        [_configBtn setTitle:@"继续" forState:UIControlStateNormal];
-//        [_configBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        _configBtn.titleLabel.font = FONT_Bold_(16);
-//        _configBtn.layer.masksToBounds = YES;
-//        [_configBtn addTarget:self action:@selector(configAction) forControlEvents:UIControlEventTouchUpInside];
-//        _configBtn.layer.cornerRadius = 4.0;
         _configBtn = [[GTLoginButton alloc] init];
         _configBtn.btnTitle = @"继续";
-        
     }
     return _configBtn;
 }

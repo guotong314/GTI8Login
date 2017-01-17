@@ -56,7 +56,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     self.userPasswordField.ly_placeholder = @"密码";
     
     [self reloadLoginInfo];
-    
+    // 登录按钮的点击方法 判断是否可以点击
     @weakify(self);
     self.loginBtn.clickBlock = ^{
         @strongify(self);
@@ -68,6 +68,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 
         }
     };
+    // 登录按钮动画结束开始loading时  请求数据
     self.loginBtn.translateBlock = ^{
         @strongify(self);
         NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:[self.userAccountField textValue],
@@ -75,20 +76,24 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         [HTTPCLIENT loginWithParams:param completionHandler:^(id object, NSError *error) {
             self.view.userInteractionEnabled = YES;
             if (!error) {
+                // 缓存当前登录的用户名
                 [PersistenceHelper setData:self.userAccountField.textValue forKey:kUserKey_previousUserAccount];
                 
+                // 存储当前用户的信息
                 NSMutableDictionary *muDic = [[NSMutableDictionary alloc] initWithDictionary:object[@"Data"]];
                 [muDic setValue:self.userAccountField.textValue forKey:@"userAccount"];
                 [muDic setValue:self.userPasswordField.textValue forKey:@"userPassword"];
                 [muDic setValue:object[@"Message"] forKey:@"Message"];
                 [GTUser userWithDictionary:muDic];
                 
-//                [menuConfig saveMenuSet:[[object objForKey:@"Data"] objForKey:@"Navbar"]];
+                // 存储首页 主应用 的信息（名称，图片，类型）
                 [PersistenceHelper setData:[[object objForKey:@"Data"] objForKey:@"Navbar"] forKey:@"mainMenuMakeKey"];
-                
+                // 跳转主页面
                 [GTBaseRule openURL:@"dm://showRootVC"];
             }else{
+                // 登录失败 还原登录按钮
                 [self.loginBtn restoreButton];
+                // 弹出错误信息
                 [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
             }
         }];
@@ -98,10 +103,10 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+    // 启用 IQKeyboard 并配置
     [IQKeyboardManager sharedManager].enable = YES;
     [self configKeyboard];
-    
+    // 根据本地 服务器信息 加载登录页面
     [self reloadLoginInfo];
     
     NSString *serverUrl = [ConfigManage getPreviousServerUrl];
@@ -109,6 +114,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     if (!serverUrl) {
         [self configServiceAnimate:NO];
     }else{
+        //每次进入登录页 通过接口获取 最新的服务器信息
         [self getLoginViewInfo];
     }
 
@@ -127,6 +133,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     [IQKeyboardManager sharedManager].shouldShowTextFieldPlaceholder = NO;
     [IQKeyboardManager sharedManager].placeholderFont = [UIFont systemFontOfSize:9.0];
 }
+// 绘制登录页面
 - (void) setupView
 {
     [self.view addSubview:self.backImageView];
@@ -200,10 +207,11 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     NSString *serverUrl = [ConfigManage getPreviousServerUrl];
     [HTTPCLIENT configServiceUrl:serverUrl withParams:@{} completionHandler:^(id object, NSError *error) {
         if (!error) {
+            //存储服务器信息
             NSDictionary *dataDic = [object objForKey:@"Data"];
             NSDictionary *dic = @{@"companyName":[dataDic objForKey:@"Title"]?:@"",@"companyLogo":[dataDic objForKey:@"Logo"]?:@"",@"loginBackImage":[dataDic objForKey:@"LogonBg"]?:@""};
             [GTCompanyInfo storeCompanyInfo:dic];
-            
+            // 通过服务器信息获取图片logo，并加载登录页
             GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
             [GTImageManager downImage:companyInfo.companyLogo withCallBack:^(NSError *error) {
                 [GTImageManager downImage:companyInfo.loginBackImageUrl withCallBack:^(NSError *error) {

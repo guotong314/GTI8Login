@@ -54,7 +54,7 @@ PODS:
     - ASIHTTPRequest (~> 1.8.2)
     - GTSpec
     - GTUser
-  - GTRootKit (0.1.1):
+  - GTRootKit (0.1.2):
     - GTSpec
   - GTSpec (0.8.1):
     - AFNetworking (~> 2.0)
@@ -86,7 +86,7 @@ SPEC CHECKSUMS:
   AutoCoding: 56fa46dbfa89d44189a26ce64e6a470ed8ff4661
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   GTNetWork: 4c535ee0b2d11714954707c608e0f13dc5fa2cfc
-  GTRootKit: 7cc5f074d332387966f9b7a2ca7eabc72cdebe1f
+  GTRootKit: 4dcdd1b2cef14c7f8a3a543495b6d01e70c39b92
   GTSpec: f268c852b297c30fd059f6210dd3068eca8776c7
   GTUser: b2b66d7a6cbee0e3ae3cb48ecc95e01c38e0f55e
   IQKeyboardManager: 249c3946acf61345c18b038eb50863fe2793e3a8

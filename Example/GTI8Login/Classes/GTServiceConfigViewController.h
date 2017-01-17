@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface GTServiceConfigViewController : UIViewController
-
+// 是否显示返回按钮（若无服务器地址 则隐藏）
 @property (nonatomic, assign) BOOL isShowBack;
 
 @end

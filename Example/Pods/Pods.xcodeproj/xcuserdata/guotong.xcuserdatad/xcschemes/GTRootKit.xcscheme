@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8750AE29C30A6E7B655B2C443606EAC9'
+               BlueprintIdentifier = 'B3570A909DA860830A2A34D2AA8E6E50'
                BlueprintName = 'GTRootKit'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libGTRootKit.a'>
