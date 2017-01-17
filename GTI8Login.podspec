@@ -21,16 +21,17 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/GTI8Login'
+  s.homepage         = 'https://github.com/guotong314/GTI8Login'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { '郭通' => 'guotong314@gmail.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/GTI8Login.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/guotong314/GTI8Login.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '7.0'
 
-  s.source_files = 'GTI8Login/Classes/**/*'
+  s.prefix_header_file =  'Example/GTI8Login/GTI8Login-Prefix.pch'
+  s.source_files = 'Example/GTI8Login/Classes/**/*'
   
   # s.resource_bundles = {
   #   'GTI8Login' => ['GTI8Login/Assets/*.png']
@@ -39,4 +40,9 @@ TODO: Add long description of the pod here.
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+
+  s.dependency  'GTSpec'
+  s.dependency  'GTUser'
+  s.dependency  'GTNetWork'
+  s.dependency  'GTRootKit'
 end

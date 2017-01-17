@@ -48,8 +48,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController setNavigationBarHidden:YES];
-    // Do any additional setup after loading the view.
-    [self configKeyboard];
+    // Do any additional setup after loading the view
     
     [self setupView];
     
@@ -99,7 +98,11 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-     [self reloadLoginInfo];
+    
+    [IQKeyboardManager sharedManager].enable = YES;
+    [self configKeyboard];
+    
+    [self reloadLoginInfo];
     
     NSString *serverUrl = [ConfigManage getPreviousServerUrl];
     // 服务器地址不存在 就去配置
@@ -110,6 +113,10 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     }
 
 }
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [IQKeyboardManager sharedManager].enable = NO;
+}
 - (void) configKeyboard
 {
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO; //工具条
@@ -117,7 +124,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     [IQKeyboardManager sharedManager].shouldToolbarUsesTextFieldTintColor = YES;
     [IQKeyboardManager sharedManager].toolbarTintColor = [UIColor lightGrayColor];
     //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 100; //设置键盘textField的距离。不能小于零。默认是10.0
-    [IQKeyboardManager sharedManager].shouldShowTextFieldPlaceholder = YES;
+    [IQKeyboardManager sharedManager].shouldShowTextFieldPlaceholder = NO;
     [IQKeyboardManager sharedManager].placeholderFont = [UIFont systemFontOfSize:9.0];
 }
 - (void) setupView

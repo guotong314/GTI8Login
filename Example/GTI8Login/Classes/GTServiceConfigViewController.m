@@ -18,6 +18,9 @@
 #import "GTLoginButton.h"
 #import "GTLoginTextField.h"
 
+#import <IQKeyboardManager.h>
+#import <IQKeyboardReturnKeyHandler.h>
+
 @interface GTServiceConfigViewController ()<UIViewControllerTransitioningDelegate>
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) GTLoginTextField *serviceField;
@@ -102,6 +105,9 @@
     UIImage *logoImg = [[GTPhotoCache sharedPhotoCache] imageForKey:[self combineImageURL:companyInfo.companyLogo]];
     self.iconImageView.image = logoImg?:[UIImage imageNamed:[ConfigManage getSystemLogo]];
     
+    [IQKeyboardManager sharedManager].enable = YES;
+    [self configKeyboard];
+    
     self.serviceField.alpha = 0;
     self.configBtn.alpha = 0;
     [UIView animateWithDuration:1.0f animations:^{
@@ -113,6 +119,21 @@
         }];
     }];
 }
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [IQKeyboardManager sharedManager].enable = NO;
+}
+- (void) configKeyboard
+{
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO; //工具条
+    [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES; //点击背景收回
+    [IQKeyboardManager sharedManager].shouldToolbarUsesTextFieldTintColor = YES;
+    [IQKeyboardManager sharedManager].toolbarTintColor = [UIColor lightGrayColor];
+    //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 100; //设置键盘textField的距离。不能小于零。默认是10.0
+    [IQKeyboardManager sharedManager].shouldShowTextFieldPlaceholder = NO;
+    [IQKeyboardManager sharedManager].placeholderFont = [UIFont systemFontOfSize:9.0];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
