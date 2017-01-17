@@ -1,0 +1,1 @@
+../../../GTSpec/Example/GTSpec/Classes/Categroy/NSDictory+/NSDictionary+JSONString.h

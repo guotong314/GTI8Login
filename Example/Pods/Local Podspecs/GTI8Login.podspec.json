@@ -1,0 +1,22 @@
+{
+  "name": "GTI8Login",
+  "version": "0.1.0",
+  "summary": "A short description of GTI8Login.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/GTI8Login",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "郭通": "guotong314@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/GTI8Login.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "GTI8Login/Classes/**/*"
+}

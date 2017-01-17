@@ -1,0 +1,1 @@
+../../../GTSpec/Example/GTSpec/Classes/Categroy/UIImage+/UIImage+scale.h

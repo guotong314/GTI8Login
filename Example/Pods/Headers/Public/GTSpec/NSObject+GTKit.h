@@ -1,0 +1,1 @@
+../../../GTSpec/Example/GTSpec/Classes/Categroy/Object+/NSObject+GTKit.h

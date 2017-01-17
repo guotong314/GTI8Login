@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>serviceUrl</key>
+	<string>https://oa.menhoo.com</string>
+	<key>systemName</key>
+	<string>i8管理系统</string>
+	<key>systemLogo</key>
+	<string>welcome-logo</string>
+</dict>
+</plist>

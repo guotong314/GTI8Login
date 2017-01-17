@@ -1,0 +1,1 @@
+../../../GTSpec/Example/GTSpec/Classes/Defines/MGJEXTScope.h
