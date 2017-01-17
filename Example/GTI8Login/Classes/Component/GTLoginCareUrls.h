@@ -11,6 +11,6 @@
 @interface GTLoginCareUrls : NSObject
 
 + (NSString *) GT_Main_TokenInValid;
-
++ (NSString *) GT_Main_ClickQuit;
 
 @end

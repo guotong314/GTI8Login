@@ -21,7 +21,7 @@
  *  @return NSArray
  */
 - (NSArray *)registeredURLs {
-    return @[[GTLoginCareUrls GT_Main_TokenInValid]];
+    return @[[GTLoginCareUrls GT_Main_TokenInValid],[GTLoginCareUrls GT_Main_ClickQuit]];
 };
 
 /**
@@ -35,14 +35,22 @@
     
     GTURLHelper *urlEntity = [GTURLHelper URLWithString:URL];
     if ([urlEntity.host isEqualToString:@"tokenInValid"]) {
-        GTI8LoginViewController *loginVC = [[GTI8LoginViewController alloc] init];
-        GTNavigationViewController *nav = [[GTNavigationViewController alloc] initWithRootViewController:loginVC];
-        APPWINDOW.window.rootViewController = nav;
-        [APPWINDOW makeKeyAndVisible];
+        
+        [self showLogin];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showLogin" object:@(YES)];
     }
+    else if ([urlEntity.host isEqualToString:@"clickQuit"]) {
+        
+        [self showLogin];
+    }
 }
-
+- (void) showLogin
+{
+    GTI8LoginViewController *loginVC = [[GTI8LoginViewController alloc] init];
+    GTNavigationViewController *nav = [[GTNavigationViewController alloc] initWithRootViewController:loginVC];
+    APPWINDOW.window.rootViewController = nav;
+    [APPWINDOW makeKeyAndVisible];
+}
 
 @end

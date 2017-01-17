@@ -11,5 +11,6 @@
 @implementation GTLoginCareUrls
 
 + (NSString *) GT_Main_TokenInValid {return @"dm://tokenInValid";}
++ (NSString *) GT_Main_ClickQuit {return @"dm://clickQuit";}
 
 @end
