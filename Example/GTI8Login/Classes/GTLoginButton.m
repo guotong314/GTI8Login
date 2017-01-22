@@ -8,7 +8,7 @@
 
 #import "GTLoginButton.h"
 
-#define RECT  CGRectMake(0, 0, UI_SCREEN_WIDTH - 60, 40)
+#define RECT  CGRectMake(0, 0, UI_SCREEN_WIDTH - 60, 44)
 #define COLOR_Login RGBA(55, 117, 189, 1)
 
 @interface GTLoginButton()
@@ -210,7 +210,7 @@
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
     [_button setTitle:self.btnTitle forState:UIControlStateNormal];
     [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+    _button.titleLabel.font = [UIFont systemFontOfSize:17.f];
     [self addSubview:_button];
     [_button addTarget:self action:@selector(clickBtn) forControlEvents:UIControlEventTouchUpInside];
     @weakify(self);

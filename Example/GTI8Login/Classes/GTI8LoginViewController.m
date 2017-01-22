@@ -182,7 +182,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         make.top.mas_equalTo(self.userPasswordField.mas_bottom).mas_offset(12);
         make.left.mas_equalTo(self.view).mas_offset(30);
         make.right.mas_equalTo(self.view).mas_offset(-30);
-        make.height.mas_equalTo(40);
+        make.height.mas_equalTo(44);
     }];
     [self.configBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
@@ -283,6 +283,8 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         _commpanyName = [[UILabel alloc] init];
         _commpanyName.font = FONT_(20);
         _commpanyName.textAlignment = NSTextAlignmentCenter;
+        _commpanyName.shadowColor = [UIColor whiteColor];
+        _commpanyName.shadowOffset = CGSizeMake(2, 2);
 
     }
     return _commpanyName;
