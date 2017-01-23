@@ -10,7 +10,7 @@
 
 @implementation GTNavigateModule
 
-+ (id)sharedInstance {
++ (instancetype)sharedInstance {
     static GTNavigateModule *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

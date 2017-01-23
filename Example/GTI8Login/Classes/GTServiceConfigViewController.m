@@ -107,6 +107,8 @@
         make.height.mas_equalTo(40);
     }];
 
+    GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
+    self.registerBtn.hidden = companyInfo.registerHidden;
 }
 - (void) viewWillAppear:(BOOL)animated
 {

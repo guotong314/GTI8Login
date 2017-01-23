@@ -28,6 +28,8 @@
 - (NSString *) getSystemServer;
 - (NSString *) getSystemLogo;
 
+- (id) getSystemConfig:(NSString *)config;
+
 //- (NSString *) configImFileURL:(NSString *)attid withName:(NSString *)fileName withWidth:(float)width withLevel:(NSInteger)level;
 
 - (NSString *) getPreviousServerUrl;

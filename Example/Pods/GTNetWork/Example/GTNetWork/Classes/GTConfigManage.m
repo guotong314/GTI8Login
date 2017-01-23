@@ -112,7 +112,11 @@ NSString * const kUserKey_previousServerURL = @"kUserKey_previousServerURL";
     NSDictionary *rootDic = [self getSystemInfo];
     return [rootDic objForKey:@"systemLogo"];
 }
-
+- (id) getSystemConfig:(NSString *)config
+{
+    NSDictionary *rootDic = [self getSystemInfo];
+    return [rootDic objForKey:config];
+}
 
 
 @end

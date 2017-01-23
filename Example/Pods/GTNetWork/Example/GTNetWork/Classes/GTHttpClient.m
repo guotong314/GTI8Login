@@ -46,6 +46,15 @@
         [jsonAcceptableContentTypes addObject:@"text/html"];
         self.manager.responseSerializer.acceptableContentTypes = jsonAcceptableContentTypes;
         
+        AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+        // 如果是需要服务端验证证书，需要设置为YES
+        securityPolicy.allowInvalidCertificates = YES;
+        //validatesDomainName 是否需要验证域名，默认为YES；
+        securityPolicy.validatesDomainName = NO;
+        //设置验证模式
+        self.manager.securityPolicy = securityPolicy;
+
+        
         self.processQueue = [[NSOperationQueue alloc] init];
         [self.processQueue setMaxConcurrentOperationCount:1];
         //

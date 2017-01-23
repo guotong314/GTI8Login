@@ -13,6 +13,6 @@
 
 @property (nonatomic, strong) GTNavigationViewController *currentNavigation;
 
-+(id) sharedInstance;
++(instancetype) sharedInstance;
 
 @end

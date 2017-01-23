@@ -19,6 +19,7 @@ NSString * const kDMCompany_InfoKey = @"companyInfokey";
         self.companyLogo = [dic objForKey:@"companyLogo"];
         self.companyName = [dic objForKey:@"companyName"];
         self.loginBackImageUrl = [dic objForKey:@"loginBackImage"];
+        self.registerHidden = [[dic objForKey:@"registerHidden"] boolValue];
     }
     return self;
 }
