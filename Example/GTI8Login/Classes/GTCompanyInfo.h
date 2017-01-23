@@ -13,7 +13,6 @@
 @property (nonatomic, copy) NSString *companyLogo;
 @property (nonatomic, copy) NSString *companyName;
 @property (nonatomic, copy) NSString *loginBackImageUrl;
-@property (nonatomic, assign) BOOL registerHidden;
 
 + (void) storeCompanyInfo:(NSDictionary *)dic;
 + (GTCompanyInfo *) getCompanyInfo;
