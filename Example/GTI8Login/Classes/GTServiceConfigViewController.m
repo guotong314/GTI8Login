@@ -26,6 +26,7 @@
 @property (nonatomic, strong) GTLoginTextField *serviceField;
 @property (nonatomic, strong) GTLoginButton *configBtn;
 @property (nonatomic, strong) UIButton *backBtn;
+@property (nonatomic, strong) UIButton *registerBtn;
 
 @end
 
@@ -57,6 +58,7 @@
     [self.view addSubview:self.iconImageView];
     [self.view addSubview:self.configBtn];
     [self.view addSubview:self.serviceField];
+    [self.view addSubview:self.registerBtn];
     
     @weakify(self);
     
@@ -97,6 +99,14 @@
         [self configAction];
     };
 
+    [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        @strongify(self);
+        make.top.mas_equalTo(self.configBtn.mas_bottom).mas_offset(4);
+        make.centerX.mas_equalTo(self.view);
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(40);
+    }];
+
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -117,6 +127,7 @@
         [self.serviceField becomeFirstResponder];
         [UIView animateWithDuration:1.0 animations:^{
             self.configBtn.alpha = 1;
+            self.registerBtn.alpha = 1;
         }];
     }];
 }
@@ -144,6 +155,10 @@
     //    [self.navigationController  popViewControllerAnimated:YES];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+- (void) registerAction
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/register"]];
+}
 - (void) configAction
 {
     
@@ -154,6 +169,7 @@
     serverStr = [serverStr lowercaseString];
     
     [HTTPCLIENT configServiceUrl:serverStr withParams:@{} completionHandler:^(id object, NSError *error) {
+        self.view.userInteractionEnabled = YES;
         if (!error) {
             NSDictionary *dataDic = [object objForKey:@"Data"];
             NSDictionary *dic = @{@"companyName":[dataDic objForKey:@"Title"]?:@"",@"companyLogo":[dataDic objForKey:@"Logo"]?:@"",@"loginBackImage":[dataDic objForKey:@"LogonBg"]?:@""};
@@ -240,6 +256,23 @@
     }
     return _configBtn;
 }
+- (UIButton *) registerBtn
+{
+    if (!_registerBtn) {
+        _registerBtn = [[UIButton alloc] init];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"开通阿图云办公"];
+        NSRange strRange = {0,[str length]};
+        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+        _registerBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        _registerBtn.titleLabel.textColor = RGBA(55, 117, 189, 1);
+        _registerBtn.titleLabel.font = FONT_(14);
+        self.registerBtn.alpha = 0;
+        [_registerBtn addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
+        [_registerBtn setAttributedTitle:str forState:UIControlStateNormal];//这个状态要加上
+    }
+    return _registerBtn;
+}
+
 #pragma mark - provite
 - (NSString *)combineImageURL:(NSString *)url
 {
