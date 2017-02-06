@@ -58,6 +58,9 @@ static const CGFloat lineWidth = 1;
         _placeholderLabel.hidden = YES;
         [self addSubview:_placeholderLabel];
         
+        _placeholderNormalStateColor = [UIColor lightGrayColor];
+        _placeholderSelectStateColor = [UIColor lightGrayColor];
+        
         _lineView = [[UIView alloc]initWithFrame:CGRectZero];
         _lineView.backgroundColor = [UIColor lightGrayColor];
         [self addSubview:_lineView];
@@ -191,5 +194,9 @@ static const CGFloat lineWidth = 1;
 - (void) regsinField
 {
     [self.textField  resignFirstResponder];
+}
+- (void) becomeAction
+{
+    [self.textField becomeFirstResponder];
 }
 @end

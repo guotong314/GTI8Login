@@ -30,7 +30,7 @@
 @property (nonatomic, assign) BOOL secureTextEntry;
 @property (nonatomic, assign) UITextAutocapitalizationType autocapitalization;
 - (void) regsinField;
-
+- (void) becomeAction;
 
 - (NSString *) textValue;
 

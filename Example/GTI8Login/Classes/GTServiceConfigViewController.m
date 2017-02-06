@@ -20,11 +20,12 @@
 
 #import <IQKeyboardManager.h>
 #import <IQKeyboardReturnKeyHandler.h>
+#import "GTLoadingButton.h"
 
 @interface GTServiceConfigViewController ()<UIViewControllerTransitioningDelegate>
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) GTLoginTextField *serviceField;
-@property (nonatomic, strong) GTLoginButton *configBtn;
+@property (nonatomic, strong) GTLoadingButton *configBtn;
 @property (nonatomic, strong) UIButton *backBtn;
 @property (nonatomic, strong) UIButton *registerBtn;
 
@@ -85,20 +86,20 @@
         make.width.mas_equalTo(88);
     }];
     
-    self.configBtn.clickBlock = ^{
-        @strongify(self);
-        if (self.serviceField.textValue.length) {
-            [self.configBtn clickAnimation];
-            self.view.userInteractionEnabled = NO;
-            [self.serviceField regsinField];
-            
-        }
-    };
-    self.configBtn.translateBlock = ^{
-        @strongify(self);
-        [self configAction];
-    };
-
+//    self.configBtn.clickBlock = ^{
+//        @strongify(self);
+//        if (self.serviceField.textValue.length) {
+//            [self.configBtn clickAnimation];
+//            self.view.userInteractionEnabled = NO;
+//            [self.serviceField regsinField];
+//            
+//        }
+//    };
+//    self.configBtn.translateBlock = ^{
+//        @strongify(self);
+//        [self configAction];
+//    };
+//
     [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.top.mas_equalTo(self.configBtn.mas_bottom).mas_offset(4);
@@ -130,6 +131,8 @@
         [UIView animateWithDuration:1.0 animations:^{
             self.configBtn.alpha = 1;
             self.registerBtn.alpha = 1;
+        } completion:^(BOOL finished) {
+            [self.serviceField becomeAction];
         }];
     }];
 }
@@ -155,7 +158,15 @@
 - (void) goBack
 {
     //    [self.navigationController  popViewControllerAnimated:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    [UIView transitionWithView:self.navigationController.view
+                      duration:0.7
+                       options:UIViewAnimationOptionTransitionFlipFromLeft
+                    animations:^{
+                        [self.navigationController  popViewControllerAnimated:NO];
+                    }
+                    completion:nil];
+
 }
 - (void) registerAction
 {
@@ -163,8 +174,13 @@
 }
 - (void) configAction
 {
-    
-//    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:nil];
+    if (!self.serviceField.textValue.length) {
+        return;
+    }
+
+    [self.configBtn startAnimation];
+    self.view.userInteractionEnabled = NO;
+    [self.serviceField regsinField];
     
     NSString *serverStr = self.serviceField.textValue;
     serverStr = [ConfigManage configServerURL:serverStr];
@@ -194,7 +210,8 @@
                 [GTConfigManage sharedInstance].isHttps = NO;
                 [self configAction];
             }else{
-                [self.configBtn restoreButton];
+//                [self.configBtn restoreButton];
+                [self.configBtn stopAnimation];
                 [GTConfigManage sharedInstance].isHttps = YES;
                 NSLog(@"errHttp:%@",error.domain);
                 [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
@@ -250,11 +267,18 @@
     }
     return _serviceField;
 }
-- (GTLoginButton *) configBtn
+- (GTLoadingButton *) configBtn
 {
     if (!_configBtn) {
-        _configBtn = [[GTLoginButton alloc] init];
-        _configBtn.btnTitle = @"继续";
+        _configBtn = [[GTLoadingButton alloc] init];
+        _configBtn.backgroundColor = RGBA(55, 117, 189, 1);
+        [_configBtn setTitle:@"继续" forState:UIControlStateNormal];
+        [_configBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _configBtn.titleLabel.font = FONT_(17);
+        _configBtn.layer.masksToBounds = YES;
+        _configBtn.layer.cornerRadius = 4.0;
+        [_configBtn addTarget:self action:@selector(configAction) forControlEvents:UIControlEventTouchUpInside];
+
     }
     return _configBtn;
 }

@@ -18,6 +18,7 @@
 		4E036FD61E2CBF77004E8D82 /* GTHttpClient+Login.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E036FD51E2CBF77004E8D82 /* GTHttpClient+Login.m */; };
 		4E036FD91E2DB091004E8D82 /* GTServiceConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E036FD81E2DB091004E8D82 /* GTServiceConfigViewController.m */; };
 		4E036FDC1E2DB1E7004E8D82 /* GTTranstionAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E036FDB1E2DB1E7004E8D82 /* GTTranstionAnimation.m */; };
+		4E59A21B1E483A65006D93CE /* GTLoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E59A21A1E483A65006D93CE /* GTLoadingButton.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -63,6 +64,8 @@
 		4E036FD81E2DB091004E8D82 /* GTServiceConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTServiceConfigViewController.m; sourceTree = "<group>"; };
 		4E036FDA1E2DB1E7004E8D82 /* GTTranstionAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTTranstionAnimation.h; sourceTree = "<group>"; };
 		4E036FDB1E2DB1E7004E8D82 /* GTTranstionAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTTranstionAnimation.m; sourceTree = "<group>"; };
+		4E59A2191E483A65006D93CE /* GTLoadingButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTLoadingButton.h; sourceTree = "<group>"; };
+		4E59A21A1E483A65006D93CE /* GTLoadingButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTLoadingButton.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* GTI8Login_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GTI8Login_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -140,6 +143,8 @@
 				4E036FC81E2C68E2004E8D82 /* GTLoginTextField.m */,
 				4E036FCA1E2C69DB004E8D82 /* GTLoginButton.h */,
 				4E036FCB1E2C69DB004E8D82 /* GTLoginButton.m */,
+				4E59A2191E483A65006D93CE /* GTLoadingButton.h */,
+				4E59A21A1E483A65006D93CE /* GTLoadingButton.m */,
 				4E036FD41E2CBF77004E8D82 /* GTHttpClient+Login.h */,
 				4E036FD51E2CBF77004E8D82 /* GTHttpClient+Login.m */,
 				4E036FD71E2DB091004E8D82 /* GTServiceConfigViewController.h */,
@@ -447,6 +452,7 @@
 				4E036FC61E2C634F004E8D82 /* GTI8LoginViewController.m in Sources */,
 				6003F59E195388D20070C39A /* GTAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* GTViewController.m in Sources */,
+				4E59A21B1E483A65006D93CE /* GTLoadingButton.m in Sources */,
 				4E036FD31E2CAFEE004E8D82 /* GTCompanyInfo.m in Sources */,
 				4E036FDC1E2DB1E7004E8D82 /* GTTranstionAnimation.m in Sources */,
 				4E036FC91E2C68E2004E8D82 /* GTLoginTextField.m in Sources */,

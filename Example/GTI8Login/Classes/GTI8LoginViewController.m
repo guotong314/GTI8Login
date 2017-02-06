@@ -22,6 +22,10 @@
 #import <GTSpec/GTImageManager.h>
 
 #import "GTServiceConfigViewController.h"
+#import "GTLoadingButton.h"
+
+
+#define DURATION 0.7f
 
 NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 
@@ -35,7 +39,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 @property (strong, nonatomic) GTLoginTextField *userAccountField;
 @property (strong, nonatomic) GTLoginTextField *userPasswordField;
 
-@property (strong, nonatomic) GTLoginButton *loginBtn;
+@property (strong, nonatomic) GTLoadingButton *loginBtn;
 @property (strong, nonatomic) UIButton *configBtn;
 @property (strong, nonatomic) UILabel *commpanyName;
 
@@ -57,47 +61,47 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     
     [self reloadLoginInfo];
     // 登录按钮的点击方法 判断是否可以点击
-    @weakify(self);
-    self.loginBtn.clickBlock = ^{
-        @strongify(self);
-        if (self.userAccountField.textValue.length) {
-             [self.loginBtn clickAnimation];
-            self.view.userInteractionEnabled = NO;
-            [self.userAccountField regsinField];
-            [self.userPasswordField regsinField];
-
-        }
-    };
-    // 登录按钮动画结束开始loading时  请求数据
-    self.loginBtn.translateBlock = ^{
-        @strongify(self);
-        NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:[self.userAccountField textValue],
-                               @"name",self.userPasswordField.textValue,@"pwd",@"true",@"persistent", nil];
-        [HTTPCLIENT loginWithParams:param completionHandler:^(id object, NSError *error) {
-            self.view.userInteractionEnabled = YES;
-            if (!error) {
-                // 缓存当前登录的用户名
-                [PersistenceHelper setData:self.userAccountField.textValue forKey:kUserKey_previousUserAccount];
-                
-                // 存储当前用户的信息
-                NSMutableDictionary *muDic = [[NSMutableDictionary alloc] initWithDictionary:object[@"Data"]];
-                [muDic setValue:self.userAccountField.textValue forKey:@"userAccount"];
-                [muDic setValue:self.userPasswordField.textValue forKey:@"userPassword"];
-                [muDic setValue:object[@"Message"] forKey:@"Message"];
-                [GTUser userWithDictionary:muDic];
-                
-                // 存储首页 主应用 的信息（名称，图片，类型）
-                [PersistenceHelper setData:[[object objForKey:@"Data"] objForKey:@"Navbar"] forKey:@"mainMenuMakeKey"];
-                // 跳转主页面
-                [GTBaseRule openURL:@"dm://showRootVC"];
-            }else{
-                // 登录失败 还原登录按钮
-                [self.loginBtn restoreButton];
-                // 弹出错误信息
-                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
-            }
-        }];
-    };
+//    @weakify(self);
+//    self.loginBtn.clickBlock = ^{
+//        @strongify(self);
+//        if (self.userAccountField.textValue.length) {
+//             [self.loginBtn clickAnimation];
+//            self.view.userInteractionEnabled = NO;
+//            [self.userAccountField regsinField];
+//            [self.userPasswordField regsinField];
+//
+//        }
+//    };
+//    // 登录按钮动画结束开始loading时  请求数据
+//    self.loginBtn.translateBlock = ^{
+//        @strongify(self);
+//        NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:[self.userAccountField textValue],
+//                               @"name",self.userPasswordField.textValue,@"pwd",@"true",@"persistent", nil];
+//        [HTTPCLIENT loginWithParams:param completionHandler:^(id object, NSError *error) {
+//            self.view.userInteractionEnabled = YES;
+//            if (!error) {
+//                // 缓存当前登录的用户名
+//                [PersistenceHelper setData:self.userAccountField.textValue forKey:kUserKey_previousUserAccount];
+//                
+//                // 存储当前用户的信息
+//                NSMutableDictionary *muDic = [[NSMutableDictionary alloc] initWithDictionary:object[@"Data"]];
+//                [muDic setValue:self.userAccountField.textValue forKey:@"userAccount"];
+//                [muDic setValue:self.userPasswordField.textValue forKey:@"userPassword"];
+//                [muDic setValue:object[@"Message"] forKey:@"Message"];
+//                [GTUser userWithDictionary:muDic];
+//                
+//                // 存储首页 主应用 的信息（名称，图片，类型）
+//                [PersistenceHelper setData:[[object objForKey:@"Data"] objForKey:@"Navbar"] forKey:@"mainMenuMakeKey"];
+//                // 跳转主页面
+//                [GTBaseRule openURL:@"dm://showRootVC"];
+//            }else{
+//                // 登录失败 还原登录按钮
+//                [self.loginBtn restoreButton];
+//                // 弹出错误信息
+//                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
+//            }
+//        }];
+//    };
 
 }
 - (void) viewWillAppear:(BOOL)animated
@@ -116,6 +120,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     }else{
         //每次进入登录页 通过接口获取 最新的服务器信息
         [self getLoginViewInfo];
+        [self.userAccountField becomeAction];
     }
 
 }
@@ -239,6 +244,42 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     // Pass the selected object to the new view controller.
 }
 */
+- (void) loginAction
+{
+    if (self.userAccountField.textValue.length) {
+        [self.loginBtn startAnimation];
+        self.view.userInteractionEnabled = NO;
+        [self.userAccountField regsinField];
+        [self.userPasswordField regsinField];
+        NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:[self.userAccountField textValue],
+                               @"name",self.userPasswordField.textValue,@"pwd",@"true",@"persistent", nil];
+        [HTTPCLIENT loginWithParams:param completionHandler:^(id object, NSError *error) {
+            self.view.userInteractionEnabled = YES;
+            if (!error) {
+                // 缓存当前登录的用户名
+                [PersistenceHelper setData:self.userAccountField.textValue forKey:kUserKey_previousUserAccount];
+
+                // 存储当前用户的信息
+                NSMutableDictionary *muDic = [[NSMutableDictionary alloc] initWithDictionary:object[@"Data"]];
+                [muDic setValue:self.userAccountField.textValue forKey:@"userAccount"];
+                [muDic setValue:self.userPasswordField.textValue forKey:@"userPassword"];
+                [muDic setValue:object[@"Message"] forKey:@"Message"];
+                [GTUser userWithDictionary:muDic];
+
+                // 存储首页 主应用 的信息（名称，图片，类型）
+                [PersistenceHelper setData:[[object objForKey:@"Data"] objForKey:@"Navbar"] forKey:@"mainMenuMakeKey"];
+                // 跳转主页面
+                [GTBaseRule openURL:@"dm://showRootVC"];
+            }else{
+                [self.loginBtn stopAnimation];
+                // 弹出错误信息
+                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
+            }
+        }];
+
+    }
+
+}
 - (void) configAction
 {
     [self configServiceAnimate:YES];
@@ -247,8 +288,51 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     GTServiceConfigViewController *serviceVC = [[GTServiceConfigViewController alloc] init];
     serviceVC.isShowBack = animate;
+    
+    [UIView transitionWithView:self.navigationController.view
+                      duration:0.7
+                       options:UIViewAnimationOptionTransitionFlipFromRight
+                    animations:^{
+                        [self.navigationController pushViewController:serviceVC animated:NO];
+                    }
+                    completion:nil];
+
+//    NSString *subtypeString = kCATransitionFromLeft;
+//    [self transitionWithType:kCATransitionMoveIn WithSubtype:subtypeString ForView:self.view];
+    
+//    serviceVC.isShowBack = animate;
     //    [self.navigationController pushViewController:serviceVC animated:animate];
-    [self presentViewController:serviceVC animated:YES completion:nil];
+//    [self presentViewController:serviceVC animated:YES completion:nil];
+}
+#pragma CATransition动画实现
+- (void) transitionWithType:(NSString *) type WithSubtype:(NSString *) subtype ForView : (UIView *) view
+{
+    //创建CATransition对象
+    CATransition *animation = [CATransition animation];
+    
+    //设置运动时间
+    animation.duration = DURATION;
+    
+    //设置运动type
+    animation.type = type;
+    if (subtype != nil) {
+        
+        //设置子类
+        animation.subtype = subtype;
+    }
+    
+    //设置运动速度
+    animation.timingFunction = UIViewAnimationOptionCurveEaseInOut;
+    
+    [view.layer addAnimation:animation forKey:@"animation"];
+}
+#pragma UIView实现动画
+- (void) animationWithView : (UIView *)view WithAnimationTransition : (UIViewAnimationTransition) transition
+{
+    [UIView animateWithDuration:DURATION animations:^{
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationTransition:transition forView:view cache:YES];
+    }];
 }
 
 #pragma mark - provite
@@ -311,11 +395,18 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     }
     return _userPasswordField;
 }
-- (GTLoginButton *) loginBtn
+- (GTLoadingButton *) loginBtn
 {
     if (!_loginBtn) {
-        _loginBtn = [[GTLoginButton alloc] init];
-        _loginBtn.btnTitle = @"登录";
+        _loginBtn = [[GTLoadingButton alloc] init];
+        _loginBtn.backgroundColor = RGBA(55, 117, 189, 1);
+        [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
+        [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _loginBtn.titleLabel.font = FONT_(17);
+        _loginBtn.layer.masksToBounds = YES;
+        _loginBtn.layer.cornerRadius = 4.0;
+        [_loginBtn addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
+//        _loginBtn.btnTitle = @"登录";
     }
     return _loginBtn;
 }
