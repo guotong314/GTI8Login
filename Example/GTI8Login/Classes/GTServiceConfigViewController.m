@@ -78,6 +78,16 @@
         make.right.mas_equalTo(self.view).mas_offset(-30);
         make.height.mas_equalTo(44);
     }];
+    self.serviceField.changeTextBlock = ^(NSString *value){
+        @strongify(self);
+        [UIView animateWithDuration:0.3 animations:^{
+            if (value.length) {
+                self.configBtn.backgroundColor = [UIColor redColor];
+            }else{
+                self.configBtn.backgroundColor = [UIColor lightGrayColor];
+            }
+        }];
+    };
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.bottom.mas_equalTo(self.serviceField.mas_top).mas_offset(-20);
@@ -85,6 +95,7 @@
         make.height.mas_equalTo(88);
         make.width.mas_equalTo(88);
     }];
+    
     
 //    self.configBtn.clickBlock = ^{
 //        @strongify(self);
@@ -104,7 +115,7 @@
         @strongify(self);
         make.top.mas_equalTo(self.configBtn.mas_bottom).mas_offset(4);
         make.centerX.mas_equalTo(self.view);
-        make.width.mas_equalTo(200);
+        make.width.mas_equalTo(300);
         make.height.mas_equalTo(40);
     }];
 
@@ -242,28 +253,18 @@
 - (GTLoginTextField *) serviceField
 {
     if (!_serviceField) {
-//        _serviceField = [[UITextField alloc] init];
-//        _serviceField.textAlignment = NSTextAlignmentCenter;
-//        _serviceField.placeholder = @"请输入服务器地址";
-//        _serviceField.font = FONT_Bold_(15);
-//        _serviceField.textColor = RGBA(151, 151, 151, 1);
-//        _serviceField.keyboardType = UIKeyboardTypeURL;
-//        _serviceField.layer.borderWidth = 1.0;
-//        _serviceField.layer.borderColor = RGBA(151, 151, 151, 1).CGColor;
-//        _serviceField.layer.masksToBounds = YES;
-//        _serviceField.layer.cornerRadius = 4.0;
-//        [_serviceField setAutocorrectionType:UITextAutocorrectionTypeNo];
-//        _serviceField.clearButtonMode = UITextFieldViewModeWhileEditing;
-//        
-//        [_serviceField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
         _serviceField = [[GTLoginTextField alloc] init];
         _serviceField.ly_placeholder = @"服务器地址";
 //        _serviceField.textAlignment = NSTextAlignmentCenter;
-        _serviceField.keyboardType = UIKeyboardTypeURL;
-        [_serviceField setAutocorrection:UITextAutocorrectionTypeNo];
-        _serviceField.textMode = UITextFieldViewModeWhileEditing;
-        _serviceField.autocapitalization = UITextAutocapitalizationTypeNone;
+        _serviceField.textField.keyboardType = UIKeyboardTypeURL;
+        _serviceField.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _serviceField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _serviceField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         
+        if (ConfigManage.fileServerURL) {
+            _serviceField.textField.text = ConfigManage.fileServerURL;
+            self.configBtn.backgroundColor = [UIColor redColor];
+        }
     }
     return _serviceField;
 }
@@ -271,7 +272,7 @@
 {
     if (!_configBtn) {
         _configBtn = [[GTLoadingButton alloc] init];
-        _configBtn.backgroundColor = RGBA(55, 117, 189, 1);
+        _configBtn.backgroundColor = [UIColor lightGrayColor];//RGBA(55, 117, 189, 1);
         [_configBtn setTitle:@"继续" forState:UIControlStateNormal];
         [_configBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _configBtn.titleLabel.font = FONT_(17);
@@ -286,11 +287,11 @@
 {
     if (!_registerBtn) {
         _registerBtn = [[UIButton alloc] init];
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"开通阿图云办公"];
-        NSRange strRange = {0,[str length]};
-        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"还没有账户？立即在线注册阿图云办公平台"];
+//        NSRange strRange = {0,[str length]};
+//        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
         _registerBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
-        _registerBtn.titleLabel.textColor = RGBA(55, 117, 189, 1);
+        _registerBtn.titleLabel.textColor = RGB(6, 96, 191);//RGBA(55, 117, 189, 1);
         _registerBtn.titleLabel.font = FONT_(14);
         self.registerBtn.alpha = 0;
         [_registerBtn addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];

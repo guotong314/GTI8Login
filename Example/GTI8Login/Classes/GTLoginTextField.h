@@ -10,6 +10,9 @@
 
 @interface GTLoginTextField : UIView
 
+//文本框
+@property (nonatomic,strong) UITextField *textField;
+
 //注释信息
 @property (nonatomic,copy) NSString *ly_placeholder;
 
@@ -21,6 +24,8 @@
 
 //注释选中状态下颜色
 @property (nonatomic,strong) UIColor *placeholderSelectStateColor;
+
+@property (nonatomic,copy) void (^changeTextBlock)(NSString *value) ;
 
 @property (nonatomic, assign) NSTextAlignment textAlignment;
 @property (nonatomic, assign) UIKeyboardType  keyboardType;

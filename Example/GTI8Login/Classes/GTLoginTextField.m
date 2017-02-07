@@ -13,9 +13,6 @@
 
 @interface GTLoginTextField()<UITextFieldDelegate>
 
-//文本框
-@property (nonatomic,strong) UITextField *textField;
-
 //注释
 @property (nonatomic,strong) UILabel *placeholderLabel;
 
@@ -93,6 +90,10 @@ static const CGFloat lineWidth = 1;
     
     CGFloat y = _placeholderLabel.center.y;
     CGFloat x = _placeholderLabel.center.x;
+    
+    if (self.changeTextBlock) {
+        self.changeTextBlock(self.textField.text);
+    }
     
     if(_textField.text.length != 0 && !_moved){
         _placeholderLabel.hidden = NO;

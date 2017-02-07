@@ -169,14 +169,14 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     }];
     [self.userAccountField mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.top.mas_equalTo(self.commpanyName.mas_bottom).mas_offset(8);
+        make.top.mas_equalTo(self.commpanyName.mas_bottom).mas_offset(12);
         make.left.mas_equalTo(self.view).mas_offset(30);
         make.right.mas_equalTo(self.view).mas_offset(-30);
         make.height.mas_equalTo(40);
     }];
     [self.userPasswordField mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.top.mas_equalTo(self.userAccountField.mas_bottom).mas_offset(12);
+        make.top.mas_equalTo(self.userAccountField.mas_bottom).mas_offset(16);
         make.left.mas_equalTo(self.view).mas_offset(30);
         make.right.mas_equalTo(self.view).mas_offset(-30);
         make.height.mas_equalTo(40);
@@ -193,8 +193,21 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         @strongify(self);
         make.top.mas_equalTo(self.loginBtn.mas_bottom);
         make.right.mas_equalTo(self.view).mas_offset(-40);
-        make.width.height.mas_equalTo(44);
+        make.height.mas_equalTo(44);
+        make.width.mas_equalTo(96);
     }];
+    
+    self.userAccountField.changeTextBlock = ^(NSString *value){
+        @strongify(self);
+        [UIView animateWithDuration:0.3 animations:^{
+            if (value.length) {
+                self.loginBtn.backgroundColor = [UIColor redColor];
+            }else{
+                self.loginBtn.backgroundColor = [UIColor lightGrayColor];
+            }
+        }];
+    };
+
 }
 - (void) reloadLoginInfo
 {
@@ -377,9 +390,9 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     if (!_userAccountField) {
         _userAccountField = [[GTLoginTextField alloc] init];
-        [_userAccountField setAutocorrection:UITextAutocorrectionTypeNo];
-        _userAccountField.textMode = UITextFieldViewModeWhileEditing;
-        _userAccountField.autocapitalization = UITextAutocapitalizationTypeNone;
+        _userAccountField.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _userAccountField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _userAccountField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     }
     return _userAccountField;
 }
@@ -387,11 +400,11 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     if (!_userPasswordField) {
         _userPasswordField = [[GTLoginTextField alloc] init];
-        [_userPasswordField setAutocorrection:UITextAutocorrectionTypeNo];
-        _userPasswordField.textMode = UITextFieldViewModeWhileEditing;
-        _userPasswordField.enableReturnKey = YES;
-        _userPasswordField.secureTextEntry = YES;
-        _userPasswordField.autocapitalization = UITextAutocapitalizationTypeNone;
+        _userPasswordField.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _userPasswordField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _userPasswordField.textField.enablesReturnKeyAutomatically = YES;
+        _userPasswordField.textField.secureTextEntry = YES;
+        _userPasswordField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     }
     return _userPasswordField;
 }
@@ -399,7 +412,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     if (!_loginBtn) {
         _loginBtn = [[GTLoadingButton alloc] init];
-        _loginBtn.backgroundColor = RGBA(55, 117, 189, 1);
+        _loginBtn.backgroundColor = [UIColor lightGrayColor];//RGBA(55, 117, 189, 1);
         [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
         [_loginBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _loginBtn.titleLabel.font = FONT_(17);
@@ -415,8 +428,8 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     if (!_configBtn) {
         _configBtn = [[UIButton  alloc] init];
         _configBtn.backgroundColor = [UIColor clearColor];
-        [_configBtn setTitle:@"配置" forState:UIControlStateNormal];
-        [_configBtn setTitleColor:RGBA(55, 117, 189, 1) forState:UIControlStateNormal];
+        [_configBtn setTitle:@"设置服务器地址" forState:UIControlStateNormal];
+        [_configBtn setTitleColor:RGB(6, 96, 191) forState:UIControlStateNormal];
         _configBtn.titleLabel.font = FONT_(13);
         [_configBtn addTarget:self action:@selector(configAction) forControlEvents:UIControlEventTouchUpInside];
     }
