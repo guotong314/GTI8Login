@@ -209,8 +209,8 @@
             //            [PersistenceHelper setData:serverStr forKey:kUserKey_previousServerURL];
             
             GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
-            [GTImageManager downImage:companyInfo.companyLogo withCallBack:^(NSError *error) {
-                [GTImageManager downImage:companyInfo.loginBackImageUrl withCallBack:^(NSError *error) {
+            [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.companyLogo] withCallBack:^(NSError *error) {
+                [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.loginBackImageUrl] withCallBack:^(NSError *error) {
                     [self goBack];
                 }];
             }];
