@@ -82,7 +82,7 @@
         @strongify(self);
         [UIView animateWithDuration:0.3 animations:^{
             if (value.length) {
-                self.configBtn.backgroundColor = [UIColor redColor];
+                self.configBtn.backgroundColor = RGB(244, 42, 25);
             }else{
                 self.configBtn.backgroundColor = [UIColor lightGrayColor];
             }
@@ -207,13 +207,13 @@
             [[GTConfigManage sharedInstance] setFileServerURL:serverStr];
             [ConfigManage savePreviousServerUrl:serverStr];
             //            [PersistenceHelper setData:serverStr forKey:kUserKey_previousServerURL];
-            
-            GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
-            [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.companyLogo] withCallBack:^(NSError *error) {
-                [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.loginBackImageUrl] withCallBack:^(NSError *error) {
-                    [self goBack];
-                }];
-            }];
+            [self goBack];
+//            GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
+//            [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.companyLogo] withCallBack:^(NSError *error) {
+//                [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.loginBackImageUrl] withCallBack:^(NSError *error) {
+//                    [self goBack];
+//                }];
+//            }];
         }else{
             // 如果用https  请求失败 然后用http再请求
             if (error.userInfo[kDMErrorUserInfoMsgCode] && [serverStr hasPrefix:@"https"]) {

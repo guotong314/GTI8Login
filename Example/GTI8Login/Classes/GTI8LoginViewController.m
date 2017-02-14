@@ -201,7 +201,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         @strongify(self);
         [UIView animateWithDuration:0.3 animations:^{
             if (value.length) {
-                self.loginBtn.backgroundColor = [UIColor redColor];
+                self.loginBtn.backgroundColor = RGB(244, 42, 25);
             }else{
                 self.loginBtn.backgroundColor = [UIColor lightGrayColor];
             }
