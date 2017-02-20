@@ -288,7 +288,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
                 // 弹出错误信息
                 [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
             }
-        }];
+             }];
 
     }
 
@@ -361,6 +361,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     if (!_backImageView) {
         _backImageView = [[UIImageView alloc] init];
+        _backImageView.hidden = YES;
     }
     return _backImageView;
 }
