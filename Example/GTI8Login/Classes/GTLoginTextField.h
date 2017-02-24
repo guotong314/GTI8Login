@@ -13,6 +13,10 @@
 //文本框
 @property (nonatomic,strong) UITextField *textField;
 
+//线
+@property (nonatomic,strong) UIView *lineView;
+
+
 //注释信息
 @property (nonatomic,copy) NSString *ly_placeholder;
 

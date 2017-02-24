@@ -16,9 +16,6 @@
 //注释
 @property (nonatomic,strong) UILabel *placeholderLabel;
 
-//线
-@property (nonatomic,strong) UIView *lineView;
-
 //填充线
 @property (nonatomic,strong) CALayer *lineLayer;
 

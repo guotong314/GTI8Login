@@ -41,6 +41,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 
 @property (strong, nonatomic) GTLoadingButton *loginBtn;
 @property (strong, nonatomic) UIButton *configBtn;
+@property (strong, nonatomic) UIButton *forgetPwdBtn;
 @property (strong, nonatomic) UILabel *commpanyName;
 
 @end
@@ -197,6 +198,18 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         make.width.mas_equalTo(96);
     }];
     
+    BOOL isAtuyunHidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];
+    if (!isAtuyunHidden) {
+        [self.view addSubview:self.forgetPwdBtn];
+        [self.forgetPwdBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.top.mas_equalTo(self.loginBtn.mas_bottom);
+            make.left.mas_equalTo(self.view).mas_offset(30);
+            make.height.mas_equalTo(44);
+            make.width.mas_equalTo(72);
+        }];
+    }
+    
     self.userAccountField.changeTextBlock = ^(NSString *value){
         @strongify(self);
         [UIView animateWithDuration:0.3 animations:^{
@@ -297,6 +310,10 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     [self configServiceAnimate:YES];
 }
+- (void) forgetPwdAction
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findPwd"]];
+}
 - (void) configServiceAnimate:(BOOL) animate
 {
     GTServiceConfigViewController *serviceVC = [[GTServiceConfigViewController alloc] init];
@@ -369,7 +386,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 {
     if (!_logoImageView) {
         _logoImageView = [[UIImageView alloc] init];
-        _logoImageView.alpha = .75;
+//        _logoImageView.alpha = .75;
         _logoImageView.layer.masksToBounds = YES;
         _logoImageView.layer.cornerRadius = 4.0;
     }
@@ -436,4 +453,17 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     }
     return _configBtn;
 }
+- (UIButton *) forgetPwdBtn
+{
+    if (!_forgetPwdBtn) {
+        _forgetPwdBtn = [[UIButton  alloc] init];
+        _forgetPwdBtn.backgroundColor = [UIColor clearColor];
+        [_forgetPwdBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
+        [_forgetPwdBtn setTitleColor:RGB(6, 96, 191) forState:UIControlStateNormal];
+        _forgetPwdBtn.titleLabel.font = FONT_(13);
+        [_forgetPwdBtn addTarget:self action:@selector(forgetPwdAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _forgetPwdBtn;
+}
+
 @end

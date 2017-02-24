@@ -22,12 +22,15 @@
 #import <IQKeyboardReturnKeyHandler.h>
 #import "GTLoadingButton.h"
 
+#define domainStr  @".atuyun.cn"
+
 @interface GTServiceConfigViewController ()<UIViewControllerTransitioningDelegate>
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) GTLoginTextField *serviceField;
 @property (nonatomic, strong) GTLoadingButton *configBtn;
 @property (nonatomic, strong) UIButton *backBtn;
 @property (nonatomic, strong) UIButton *registerBtn;
+@property (nonatomic, strong) UIButton *forgetDomainBtn;
 
 @end
 
@@ -61,6 +64,11 @@
     [self.view addSubview:self.serviceField];
     [self.view addSubview:self.registerBtn];
     
+    BOOL isAtuyunHidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];
+    
+    float serviceRight = isAtuyunHidden?-30:-150;
+    float serviceTop = isAtuyunHidden? -20: -44;
+    
     @weakify(self);
     
     [self.configBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -73,9 +81,9 @@
     
     [self.serviceField mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
-        make.bottom.mas_equalTo(self.configBtn.mas_top).mas_offset(-20);
+        make.bottom.mas_equalTo(self.configBtn.mas_top).mas_offset(serviceTop);
         make.left.mas_equalTo(self.view).mas_offset(30);
-        make.right.mas_equalTo(self.view).mas_offset(-30);
+        make.right.mas_equalTo(self.view).mas_offset(serviceRight);
         make.height.mas_equalTo(44);
     }];
     self.serviceField.changeTextBlock = ^(NSString *value){
@@ -88,6 +96,7 @@
             }
         }];
     };
+
     [self.iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.bottom.mas_equalTo(self.serviceField.mas_top).mas_offset(-20);
@@ -96,21 +105,56 @@
         make.width.mas_equalTo(88);
     }];
     
+    UIView *bottomLineView = [[UIView alloc] init];
+    bottomLineView.backgroundColor = RGB(189, 189, 189);
+    [self.view addSubview:bottomLineView];
     
-//    self.configBtn.clickBlock = ^{
-//        @strongify(self);
-//        if (self.serviceField.textValue.length) {
-//            [self.configBtn clickAnimation];
-//            self.view.userInteractionEnabled = NO;
-//            [self.serviceField regsinField];
-//            
-//        }
-//    };
-//    self.configBtn.translateBlock = ^{
-//        @strongify(self);
-//        [self configAction];
-//    };
-//
+    [bottomLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        @strongify(self);
+//        make.top.mas_equalTo.(self.serviceField.mas_bottom
+        make.top.mas_equalTo(self.serviceField.mas_bottom).mas_offset(2);
+        make.height.mas_offset(0.5);
+        make.left.mas_equalTo(30);
+        make.right.mas_equalTo(-30);
+    }];
+    
+    if (!isAtuyunHidden) {
+        
+        UIView *lineView = [[UIView alloc] init];
+        lineView.backgroundColor = RGB(189, 189, 189);
+        [self.view addSubview:lineView];
+        
+        [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.top.mas_equalTo(self.serviceField.mas_top).mas_offset(6);
+            make.width.mas_equalTo(0.5);
+            make.height.mas_equalTo(30);
+            make.left.mas_equalTo(self.serviceField.mas_right).mas_offset(8);
+        }];
+        
+        UILabel *domainLabel = [[UILabel alloc] init];
+        domainLabel.text = domainStr;
+        domainLabel.textColor = [UIColor blackColor];
+        domainLabel.font = FONT_(15);
+        [self.view addSubview:domainLabel];
+        
+        [domainLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.left.mas_equalTo(lineView.mas_right).mas_offset(15);
+            make.right.mas_equalTo(self.view).mas_offset(-30);
+            make.top.height.mas_equalTo(self.serviceField);
+        }];
+        
+        [self.view addSubview:self.forgetDomainBtn];
+        [self.forgetDomainBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            @strongify(self);
+            make.top.mas_equalTo(bottomLineView.mas_bottom);
+            make.right.mas_equalTo(self.view).mas_offset(-30);
+            make.height.mas_equalTo(36);
+            make.width.mas_equalTo(80);
+        }];
+    }
+    
     [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.top.mas_equalTo(self.configBtn.mas_bottom).mas_offset(4);
@@ -120,11 +164,17 @@
     }];
 
 //    GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
-    self.registerBtn.hidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];//companyInfo.registerHidden;
+    self.registerBtn.hidden = isAtuyunHidden;//companyInfo.registerHidden;
 }
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (ConfigManage.fileServerURL) {
+        _serviceField.textField.text = [self getServiceName];
+        self.configBtn.backgroundColor = [UIColor redColor];
+    }
+
     // 根据本地存储 加载页面
     GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
     UIImage *logoImg = [[GTPhotoCache sharedPhotoCache] imageForKey:[self combineImageURL:companyInfo.companyLogo]];
@@ -142,6 +192,7 @@
         [UIView animateWithDuration:1.0 animations:^{
             self.configBtn.alpha = 1;
             self.registerBtn.alpha = 1;
+            self.forgetDomainBtn.alpha = 1;
         } completion:^(BOOL finished) {
             [self.serviceField becomeAction];
         }];
@@ -194,8 +245,7 @@
     [self.serviceField regsinField];
     
     NSString *serverStr = self.serviceField.textValue;
-    serverStr = [ConfigManage configServerURL:serverStr];
-    serverStr = [serverStr lowercaseString];
+    serverStr = [self combineService:serverStr];
     
     [HTTPCLIENT configServiceUrl:serverStr withParams:@{} completionHandler:^(id object, NSError *error) {
         self.view.userInteractionEnabled = YES;
@@ -231,6 +281,10 @@
         }
     }];
 }
+- (void) forgetDomainAction
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findDomain"]];
+}
 /*
  #pragma mark - Navigation
  
@@ -240,6 +294,34 @@
  // Pass the selected object to the new view controller.
  }
  */
+#pragma mark - private
+- (NSString *) combineService:(NSString *)url
+{
+    BOOL isAtuyunHidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];
+    NSString *serverStr = url;
+    if (!isAtuyunHidden) {
+        serverStr = [NSString stringWithFormat:@"%@%@",url,domainStr];
+    }
+    serverStr = [ConfigManage configServerURL:url];
+    serverStr = [serverStr lowercaseString];
+    return serverStr;
+}
+- (NSString *) getServiceName
+{
+    NSString *service = ConfigManage.fileServerURL;
+    BOOL isAtuyunHidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];
+    if (!isAtuyunHidden) {
+        service = [service stringByReplacingOccurrencesOfString:@"https://" withString:@""];
+        service = [service stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+        service = [service stringByReplacingOccurrencesOfString:domainStr withString:@""];
+    }
+    return service;
+}
+#pragma mark -  touchEvent
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.serviceField.textField resignFirstResponder];
+}
 #pragma mark - property
 - (UIImageView *) iconImageView
 {
@@ -255,16 +337,12 @@
     if (!_serviceField) {
         _serviceField = [[GTLoginTextField alloc] init];
         _serviceField.ly_placeholder = @"服务器地址";
+        _serviceField.lineView.hidden = YES;
 //        _serviceField.textAlignment = NSTextAlignmentCenter;
         _serviceField.textField.keyboardType = UIKeyboardTypeURL;
         _serviceField.textField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _serviceField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//        _serviceField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _serviceField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        
-        if (ConfigManage.fileServerURL) {
-            _serviceField.textField.text = ConfigManage.fileServerURL;
-            self.configBtn.backgroundColor = [UIColor redColor];
-        }
     }
     return _serviceField;
 }
@@ -299,6 +377,23 @@
     }
     return _registerBtn;
 }
+- (UIButton *) forgetDomainBtn
+{
+    if (!_forgetDomainBtn) {
+        _forgetDomainBtn = [[UIButton alloc] init];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"忘记域名"];
+        //        NSRange strRange = {0,[str length]};
+        //        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+        _forgetDomainBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        _forgetDomainBtn.titleLabel.textColor = RGB(6, 96, 191);//RGBA(55, 117, 189, 1);
+        _forgetDomainBtn.titleLabel.font = FONT_(14);
+        _forgetDomainBtn.alpha = 0;
+        [_forgetDomainBtn addTarget:self action:@selector(forgetDomainAction) forControlEvents:UIControlEventTouchUpInside];
+        [_forgetDomainBtn setAttributedTitle:str forState:UIControlStateNormal];//这个状态要加上
+    }
+    return _forgetDomainBtn;
+}
+
 
 #pragma mark - provite
 - (NSString *)combineImageURL:(NSString *)url
