@@ -302,7 +302,7 @@
     if (!isAtuyunHidden) {
         serverStr = [NSString stringWithFormat:@"%@%@",url,domainStr];
     }
-    serverStr = [ConfigManage configServerURL:url];
+    serverStr = [ConfigManage configServerURL:serverStr];
     serverStr = [serverStr lowercaseString];
     return serverStr;
 }
