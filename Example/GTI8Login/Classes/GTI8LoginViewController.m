@@ -446,7 +446,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     if (!_configBtn) {
         _configBtn = [[UIButton  alloc] init];
         _configBtn.backgroundColor = [UIColor clearColor];
-        [_configBtn setTitle:@"设置服务器地址" forState:UIControlStateNormal];
+        [_configBtn setTitle:@"设置企业域名" forState:UIControlStateNormal];
         [_configBtn setTitleColor:RGB(6, 96, 191) forState:UIControlStateNormal];
         _configBtn.titleLabel.font = FONT_(13);
         [_configBtn addTarget:self action:@selector(configAction) forControlEvents:UIControlEventTouchUpInside];

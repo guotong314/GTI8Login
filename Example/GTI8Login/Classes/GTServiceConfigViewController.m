@@ -67,7 +67,7 @@
     BOOL isAtuyunHidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];
     
     float serviceRight = isAtuyunHidden?-30:-150;
-    float serviceTop = isAtuyunHidden? -20: -44;
+    float serviceTop = -20;
     
     @weakify(self);
     
@@ -119,7 +119,6 @@
     }];
     
     if (!isAtuyunHidden) {
-        
         UIView *lineView = [[UIView alloc] init];
         lineView.backgroundColor = RGB(189, 189, 189);
         [self.view addSubview:lineView];
@@ -148,18 +147,22 @@
         [self.view addSubview:self.forgetDomainBtn];
         [self.forgetDomainBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             @strongify(self);
-            make.top.mas_equalTo(bottomLineView.mas_bottom);
-            make.right.mas_equalTo(self.view).mas_offset(-30);
-            make.height.mas_equalTo(36);
-            make.width.mas_equalTo(80);
+            make.top.mas_equalTo(self.configBtn.mas_bottom).mas_offset(4);
+            make.left.mas_equalTo(self.configBtn);
+            make.height.mas_equalTo(40);
+            make.width.mas_equalTo(64);
         }];
+
+    }else{
+        _serviceField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     }
+    
     
     [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         @strongify(self);
         make.top.mas_equalTo(self.configBtn.mas_bottom).mas_offset(4);
-        make.centerX.mas_equalTo(self.view);
-        make.width.mas_equalTo(300);
+        make.width.mas_equalTo(40);
+        make.right.mas_equalTo(self.configBtn);
         make.height.mas_equalTo(40);
     }];
 
@@ -336,7 +339,7 @@
 {
     if (!_serviceField) {
         _serviceField = [[GTLoginTextField alloc] init];
-        _serviceField.ly_placeholder = @"服务器地址";
+        _serviceField.ly_placeholder = @"输入企业域名";
         _serviceField.lineView.hidden = YES;
 //        _serviceField.textAlignment = NSTextAlignmentCenter;
         _serviceField.textField.keyboardType = UIKeyboardTypeURL;
@@ -365,7 +368,8 @@
 {
     if (!_registerBtn) {
         _registerBtn = [[UIButton alloc] init];
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"还没有账户？立即在线注册阿图云办公平台"];
+//        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"还没有账户？立即在线注册阿图云办公平台"];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"注册"];
 //        NSRange strRange = {0,[str length]};
 //        [str addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
         _registerBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
