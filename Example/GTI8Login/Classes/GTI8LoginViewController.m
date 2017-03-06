@@ -312,7 +312,10 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 }
 - (void) forgetPwdAction
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findPwd"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findPwd"]];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/findPwd&webType=1"];
+
 }
 - (void) configServiceAnimate:(BOOL) animate
 {

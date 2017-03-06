@@ -22,6 +22,8 @@
 #import <IQKeyboardReturnKeyHandler.h>
 #import "GTLoadingButton.h"
 
+#import "GTBaseRule.h"
+
 #define domainStr  @".atuyun.cn"
 
 @interface GTServiceConfigViewController ()<UIViewControllerTransitioningDelegate>
@@ -168,6 +170,22 @@
 
 //    GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
     self.registerBtn.hidden = isAtuyunHidden;//companyInfo.registerHidden;
+    
+    self.serviceField.alpha = 0;
+    self.configBtn.alpha = 0;
+    [UIView animateWithDuration:1.0f animations:^{
+        self.serviceField.alpha = 1;
+    } completion:^(BOOL finished) {
+        [self.serviceField becomeFirstResponder];
+        [UIView animateWithDuration:1.0 animations:^{
+            self.configBtn.alpha = 1;
+            self.registerBtn.alpha = 1;
+            self.forgetDomainBtn.alpha = 1;
+        } completion:^(BOOL finished) {
+            [self.serviceField becomeAction];
+        }];
+    }];
+
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -185,21 +203,6 @@
     //打开并配置IQKeyboard
     [IQKeyboardManager sharedManager].enable = YES;
     [self configKeyboard];
-    
-    self.serviceField.alpha = 0;
-    self.configBtn.alpha = 0;
-    [UIView animateWithDuration:1.0f animations:^{
-        self.serviceField.alpha = 1;
-    } completion:^(BOOL finished) {
-        [self.serviceField becomeFirstResponder];
-        [UIView animateWithDuration:1.0 animations:^{
-            self.configBtn.alpha = 1;
-            self.registerBtn.alpha = 1;
-            self.forgetDomainBtn.alpha = 1;
-        } completion:^(BOOL finished) {
-            [self.serviceField becomeAction];
-        }];
-    }];
 }
 - (void) viewDidDisappear:(BOOL)animated
 {
@@ -235,7 +238,9 @@
 }
 - (void) registerAction
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/register"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/register"]];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/register&webType=1"];
 }
 - (void) configAction
 {
@@ -286,7 +291,10 @@
 }
 - (void) forgetDomainAction
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findDomain"]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findDomain"]];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/findDomain&webType=1"];
+
 }
 /*
  #pragma mark - Navigation
