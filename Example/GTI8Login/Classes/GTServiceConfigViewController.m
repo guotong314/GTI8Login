@@ -191,6 +191,8 @@
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
     if (ConfigManage.fileServerURL) {
         _serviceField.textField.text = [self getServiceName];
         self.configBtn.backgroundColor = [UIColor redColor];

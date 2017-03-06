@@ -108,6 +108,8 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     // 启用 IQKeyboard 并配置
     [IQKeyboardManager sharedManager].enable = YES;
     [self configKeyboard];
