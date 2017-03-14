@@ -427,6 +427,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         _userAccountField.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         _userAccountField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _userAccountField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _userAccountField.textField.returnKeyType=UIReturnKeyNext;
     }
     return _userAccountField;
 }
@@ -439,6 +440,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
         _userPasswordField.textField.enablesReturnKeyAutomatically = YES;
         _userPasswordField.textField.secureTextEntry = YES;
         _userPasswordField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _userPasswordField.textField.returnKeyType=UIReturnKeyDone;
     }
     return _userPasswordField;
 }
