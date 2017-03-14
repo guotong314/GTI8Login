@@ -30,6 +30,7 @@
 @property (nonatomic,strong) UIColor *placeholderSelectStateColor;
 
 @property (nonatomic,copy) void (^changeTextBlock)(NSString *value) ;
+@property (nonatomic,copy) void (^shouldReturnBlock)() ;
 
 @property (nonatomic, assign) NSTextAlignment textAlignment;
 @property (nonatomic, assign) UIKeyboardType  keyboardType;

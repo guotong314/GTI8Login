@@ -197,4 +197,12 @@ static const CGFloat lineWidth = 1;
 {
     [self.textField becomeFirstResponder];
 }
+#pragma mark - textfield delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (self.shouldReturnBlock) {
+        self.shouldReturnBlock();
+    }
+    return YES;
+}
 @end

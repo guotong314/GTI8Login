@@ -60,6 +60,17 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     self.userAccountField.ly_placeholder = @"用户名";
     self.userPasswordField.ly_placeholder = @"密码";
     
+    @weakify(self);
+    self.userAccountField.shouldReturnBlock = ^(){
+        @strongify(self);
+        [self.userPasswordField becomeAction];
+    };
+    self.userPasswordField.shouldReturnBlock = ^(){
+        @strongify(self);
+        [self loginAction];
+    };
+
+    
     [self reloadLoginInfo];
     // 登录按钮的点击方法 判断是否可以点击
 //    @weakify(self);

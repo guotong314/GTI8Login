@@ -61,6 +61,9 @@ NSString * const kUserKey_baseInfo = @"i8Workuserkey";
     [GTUser sharedUser].userAvatarUrl = [obj objectForKey:@"Image"];
     [GTUser sharedUser].userToken = [obj objectForKey:@"Message"];
     [GTUser sharedUser].deptAndPos = [obj objectForKey:@"DeptAndPos"];
+    [GTUser sharedUser].isInviteMember = [[obj objectForKey:@"CanInvite"] boolValue];
+    [GTUser sharedUser].regPhone = [obj objectForKey:@"InvitePhoneUrl"];
+    [GTUser sharedUser].regWechat = [obj objectForKey:@"InviteWechatUrl"];
     [GTUser sharedUser].dict = [[NSMutableDictionary alloc] initWithDictionary:obj];
     
     if (![[[GTUser sharedUser].dict objForKey:@"Navbar"] isKindOfClass:[NSArray class]]) {

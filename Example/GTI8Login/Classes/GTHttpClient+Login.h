@@ -14,4 +14,6 @@
 
 - (void) loginWithParams:(NSDictionary *)params completionHandler:(DMCompletionHandler)handler;
 
+- (void) checkDomainRegWithParams:(NSDictionary *)params completionHandler:(DMCompletionHandler)handler;
+
 @end

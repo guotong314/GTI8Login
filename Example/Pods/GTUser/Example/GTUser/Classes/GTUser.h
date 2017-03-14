@@ -20,6 +20,10 @@
 @property (nonatomic,copy) NSString *userToken;
 @property (nonatomic,copy) NSString *deptAndPos;
 
+@property (nonatomic,assign) BOOL isInviteMember;
+@property (nonatomic,copy) NSString *regWechat;
+@property (nonatomic,copy) NSString *regPhone;
+
 + (GTUser *)currentUser;
 
 + (id)userWithDictionary:(NSMutableDictionary *)dict;

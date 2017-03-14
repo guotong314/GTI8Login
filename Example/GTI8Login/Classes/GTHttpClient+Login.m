@@ -64,6 +64,26 @@ NSString* const kAPI_User_Login =  @"/Services/Http/Logon.ashx";
     [self startOperation:operation];
     
 }
+- (void) checkDomainRegWithParams:(NSDictionary *)params completionHandler:(DMCompletionHandler)handler;
+{
+    NSString *url = @"https://www.atuyun.cn/Api/Public/CheckDomainReg";
+    NSOperation *operation = [self operationWithHTTPMethod:@"GET" apiURLString:url parameters:params
+                                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                       //parse response
+                                                       if (handler != nil && [responseObject isKindOfClass:[NSDictionary class]]) {
+                                                           [self changeRequestTimeOut:20.f];
+                                                           [self handleResponse:responseObject withCompletionHandler:handler];
+                                                       }
+                                                   }
+                                                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                       NSLog(@"%@", error);
+                                                       
+                                                       if (handler != nil) {
+                                                           [self handleErrorHandler:handler];
+                                                       }
+                                                   }];
+    [self startOperation:operation];
 
+}
 
 @end

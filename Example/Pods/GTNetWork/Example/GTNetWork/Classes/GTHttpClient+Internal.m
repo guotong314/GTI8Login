@@ -93,7 +93,7 @@ withCompletionHandler:(DMCompletionHandler)handler
             handler(response,nil);
         }else{
             NSError *error = [NSError errorWithDomain:errorDomain code:kDMErrorNormalCode userInfo:@{kDMErrorUserInfoMsgKey:[self errorReasion:response[@"Message"]]}];
-            handler(nil,error);
+            handler(response,error);
         }
     }else{
         NSError *error = [NSError errorWithDomain:errorDomain code:kDMErrorNormalCode userInfo:@{kDMErrorUserInfoMsgKey:@"服务器异常"}];
@@ -107,7 +107,10 @@ withCompletionHandler:(DMCompletionHandler)handler
 }
 - (NSString *)errorReasion:(NSString *)aErrorMsg
 {
-    NSString *reason = @"网络异常,请重试";
+    if (![aErrorMsg isKindOfClass:[NSString class]]) {
+        return @"";
+    }
+    NSString *reason = aErrorMsg;//@"网络异常,请重试";
     if ([aErrorMsg isEqualToString:@"PWD_INVALID"]) {
         reason = @"密码错误，请重试";
     }else if([aErrorMsg isEqualToString:@"NO_USER"]){
@@ -117,6 +120,9 @@ withCompletionHandler:(DMCompletionHandler)handler
         [GTBaseRule openURL:@"dm://tokenInValid"];
 //        [APPDELEGATE postShowLogin];
         //        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationShowLogin object:nil];
+    }
+    if (!reason) {
+        reason =@"网络异常,请重试";
     }
     return reason;
 }
