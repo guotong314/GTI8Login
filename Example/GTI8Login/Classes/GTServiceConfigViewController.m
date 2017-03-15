@@ -253,62 +253,63 @@
     if (!self.serviceField.textValue.length) {
         return;
     }
+    
     self.view.userInteractionEnabled = NO;
-    [HTTPCLIENT checkDomainRegWithParams:@{@"domainName":self.serviceField.textValue} completionHandler:^(id object, NSError *error) {
-        NSLog(@"%@",object);
-        if ([object isKindOfClass:[NSDictionary class]]) {
-            if (![[object objForKey:@"Succeed"] boolValue]) {
-                [self.configBtn startAnimation];
-                
-                [self.serviceField regsinField];
-
-                NSString *serverStr = self.serviceField.textValue;
-                serverStr = [self combineService:serverStr];
-
-                [HTTPCLIENT configServiceUrl:serverStr withParams:@{} completionHandler:^(id object, NSError *error) {
+    BOOL isAtuyunHidden = [[ConfigManage getSystemConfig:@"registerHidden"] boolValue];
+    if (isAtuyunHidden) {
+        [self gotoConfigService];
+    }else{
+        [HTTPCLIENT checkDomainRegWithParams:@{@"domainName":self.serviceField.textValue} completionHandler:^(id object, NSError *error) {
+            NSLog(@"%@",object);
+            if ([object isKindOfClass:[NSDictionary class]]) {
+                if (![[object objForKey:@"Succeed"] boolValue]) {
+                    [self gotoConfigService];
+                }else{
                     self.view.userInteractionEnabled = YES;
-                    if (!error) {
-                        NSDictionary *dataDic = [object objForKey:@"Data"];
-                        NSDictionary *dic = @{@"companyName":[dataDic objForKey:@"Title"]?:@"",@"companyLogo":[dataDic objForKey:@"Logo"]?:@"",@"loginBackImage":[dataDic objForKey:@"LogonBg"]?:@""};
-                        [GTCompanyInfo storeCompanyInfo:dic];
-
-                        [[GTConfigManage sharedInstance] setFileServerURL:serverStr];
-                        [ConfigManage savePreviousServerUrl:serverStr];
-                        //            [PersistenceHelper setData:serverStr forKey:kUserKey_previousServerURL];
-                        [self goBack];
-            //            GTCompanyInfo *companyInfo = [GTCompanyInfo getCompanyInfo];
-            //            [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.companyLogo] withCallBack:^(NSError *error) {
-            //                [GTImageManager downImage:[ConfigManage combineServerURL:companyInfo.loginBackImageUrl] withCallBack:^(NSError *error) {
-            //                    [self goBack];
-            //                }];
-            //            }];
-                    }else{
-                        // 如果用https  请求失败 然后用http再请求
-                        if (error.userInfo[kDMErrorUserInfoMsgCode] && [serverStr hasPrefix:@"https"]) {
-                            NSLog(@"errHttps:%@",error.domain);
-                            [GTConfigManage sharedInstance].isHttps = NO;
-                            [self configAction];
-                        }else{
-            //                [self.configBtn restoreButton];
-                            [self.configBtn stopAnimation];
-                            [GTConfigManage sharedInstance].isHttps = YES;
-                            NSLog(@"errHttp:%@",error.domain);
-                            [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
-                        }
-                        
-                    }
-                }];
+                    [GTRemindView showWithMesssage:@"域名不存在"];
+                    [self.configBtn stopAnimation];
+                }
             }else{
                 self.view.userInteractionEnabled = YES;
-                [GTRemindView showWithMesssage:@"域名不存在"];
+                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
                 [self.configBtn stopAnimation];
             }
+        }];
+    }
+}
+- (void) gotoConfigService
+{
+    [self.configBtn startAnimation];
+    
+    [self.serviceField regsinField];
+    
+    NSString *serverStr = self.serviceField.textValue;
+    serverStr = [self combineService:serverStr];
+    
+    [HTTPCLIENT configServiceUrl:serverStr withParams:@{} completionHandler:^(id object, NSError *error) {
+        self.view.userInteractionEnabled = YES;
+        if (!error) {
+            NSDictionary *dataDic = [object objForKey:@"Data"];
+            NSDictionary *dic = @{@"companyName":[dataDic objForKey:@"Title"]?:@"",@"companyLogo":[dataDic objForKey:@"Logo"]?:@"",@"loginBackImage":[dataDic objForKey:@"LogonBg"]?:@""};
+            [GTCompanyInfo storeCompanyInfo:dic];
+            
+            [[GTConfigManage sharedInstance] setFileServerURL:serverStr];
+            [ConfigManage savePreviousServerUrl:serverStr];
+            [self goBack];
         }else{
-            self.view.userInteractionEnabled = YES;
-            [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
-            [self.configBtn stopAnimation];
+            if (error.userInfo[kDMErrorUserInfoMsgCode] && [serverStr hasPrefix:@"https"]) {
+                NSLog(@"errHttps:%@",error.domain);
+                [GTConfigManage sharedInstance].isHttps = NO;
+                [self configAction];
+            }else{
+                [self.configBtn stopAnimation];
+                [GTConfigManage sharedInstance].isHttps = YES;
+                NSLog(@"errHttp:%@",error.domain);
+                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
+            }
         }
     }];
+
 }
 - (void) forgetDomainAction
 {
