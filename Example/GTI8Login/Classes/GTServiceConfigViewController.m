@@ -185,7 +185,11 @@
             [self.serviceField becomeAction];
         }];
     }];
-
+ 
+    self.serviceField.shouldReturnBlock = ^(){
+        @strongify(self);
+        [self configAction];
+    };
 }
 - (void) viewWillAppear:(BOOL)animated
 {
@@ -371,6 +375,7 @@
         _serviceField.textField.autocorrectionType = UITextAutocorrectionTypeNo;
 //        _serviceField.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _serviceField.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _serviceField.textField.returnKeyType=UIReturnKeyDone;
     }
     return _serviceField;
 }
