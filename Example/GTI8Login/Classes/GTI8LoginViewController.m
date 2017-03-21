@@ -132,18 +132,16 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     
     if (domainName && domainName.length) {
         [self configServiceAnimate:serverUrl withDomainName:domainName];
-    }
-    
-    
-    // 服务器地址不存在 就去配置
-    if (!serverUrl) {
-        [self configServiceAnimate:NO withDomainName:@""];
     }else{
-        //每次进入登录页 通过接口获取 最新的服务器信息
-        [self getLoginViewInfo];
-        [self.userAccountField becomeAction];
+        // 服务器地址不存在 就去配置
+        if (!serverUrl) {
+            [self configServiceAnimate:NO withDomainName:@""];
+        }else{
+            //每次进入登录页 通过接口获取 最新的服务器信息
+            [self getLoginViewInfo];
+            [self.userAccountField becomeAction];
+        }
     }
-
 }
 - (void) viewDidDisappear:(BOOL)animated
 {

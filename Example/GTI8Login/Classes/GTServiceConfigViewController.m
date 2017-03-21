@@ -198,7 +198,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if (self.domainName && self.domainName.length) {
-        _serviceField.textField.text = [self getServiceName];
+        _serviceField.textField.text = self.domainName;
         self.configBtn.backgroundColor = [UIColor redColor];
     }else{
         if (ConfigManage.fileServerURL) {
