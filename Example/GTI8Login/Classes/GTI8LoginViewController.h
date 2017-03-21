@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <GTURLHelper.h>
 
 @interface GTI8LoginViewController : UIViewController
+
+@property (nonatomic, strong) GTURLHelper *urlHelper;
 
 @end

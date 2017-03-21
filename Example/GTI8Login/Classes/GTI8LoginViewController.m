@@ -127,10 +127,17 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     // 根据本地 服务器信息 加载登录页面
     [self reloadLoginInfo];
     
+    NSString *domainName = [self.urlHelper.params objForKey:DomainName];
     NSString *serverUrl = [ConfigManage getPreviousServerUrl];
+    
+    if (domainName && domainName.length) {
+        [self configServiceAnimate:serverUrl withDomainName:domainName];
+    }
+    
+    
     // 服务器地址不存在 就去配置
     if (!serverUrl) {
-        [self configServiceAnimate:NO];
+        [self configServiceAnimate:NO withDomainName:@""];
     }else{
         //每次进入登录页 通过接口获取 最新的服务器信息
         [self getLoginViewInfo];
@@ -321,7 +328,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 }
 - (void) configAction
 {
-    [self configServiceAnimate:YES];
+    [self configServiceAnimate:YES withDomainName:@""];
 }
 - (void) forgetPwdAction
 {
@@ -330,10 +337,11 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/findPwd&webType=1"];
 
 }
-- (void) configServiceAnimate:(BOOL) animate
+- (void) configServiceAnimate:(BOOL) animate withDomainName:(NSString *)domainName
 {
     GTServiceConfigViewController *serviceVC = [[GTServiceConfigViewController alloc] init];
     serviceVC.isShowBack = animate;
+    serviceVC.domainName = domainName;
     
     [UIView transitionWithView:self.navigationController.view
                       duration:0.7

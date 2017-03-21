@@ -19,4 +19,7 @@
 #import <GTSpec/PersistenceHelper.h>
 #import <GTSpec/ValueForKey.h>
 #import <GTNetWork/GTHttpClient.h>
+
+#define DomainName   @"domainName"
+
 #endif

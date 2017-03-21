@@ -197,9 +197,14 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    if (ConfigManage.fileServerURL) {
+    if (self.domainName && self.domainName.length) {
         _serviceField.textField.text = [self getServiceName];
         self.configBtn.backgroundColor = [UIColor redColor];
+    }else{
+        if (ConfigManage.fileServerURL) {
+            _serviceField.textField.text = [self getServiceName];
+            self.configBtn.backgroundColor = [UIColor redColor];
+        }
     }
 
     // 根据本地存储 加载页面
