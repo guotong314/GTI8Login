@@ -132,6 +132,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     
     if (domainName && domainName.length) {
         [self configServiceAnimate:serverUrl withDomainName:domainName];
+        self.urlHelper = nil;
     }else{
         // 服务器地址不存在 就去配置
         if (!serverUrl) {
