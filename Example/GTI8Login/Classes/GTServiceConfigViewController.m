@@ -23,8 +23,7 @@
 #import "GTLoadingButton.h"
 
 #import "GTBaseRule.h"
-
-#define domainStr  @".atuyun.cn"
+#import "GTServiceRequest.h"
 
 @interface GTServiceConfigViewController ()<UIViewControllerTransitioningDelegate>
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -264,22 +263,36 @@
     if (isAtuyunHidden) {
         [self gotoConfigService];
     }else{
-        [HTTPCLIENT checkDomainRegWithParams:@{@"domainName":self.serviceField.textValue} completionHandler:^(id object, NSError *error) {
-            NSLog(@"%@",object);
+        [GTServiceRequest checkDomainName:self.serviceField.textValue completionHandler:^(id object, NSError *error) {
             if ([object isKindOfClass:[NSDictionary class]]) {
                 if (![[object objForKey:@"Succeed"] boolValue]) {
                     [self gotoConfigService];
                 }else{
                     self.view.userInteractionEnabled = YES;
-                    [GTRemindView showWithMesssage:@"域名不存在"];
                     [self.configBtn stopAnimation];
                 }
             }else{
                 self.view.userInteractionEnabled = YES;
-                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
                 [self.configBtn stopAnimation];
             }
+
         }];
+//        [HTTPCLIENT checkDomainRegWithParams:@{@"domainName":self.serviceField.textValue} completionHandler:^(id object, NSError *error) {
+//            NSLog(@"%@",object);
+//            if ([object isKindOfClass:[NSDictionary class]]) {
+//                if (![[object objForKey:@"Succeed"] boolValue]) {
+//                    [self gotoConfigService];
+//                }else{
+//                    self.view.userInteractionEnabled = YES;
+//                    [GTRemindView showWithMesssage:@"域名不存在"];
+//                    [self.configBtn stopAnimation];
+//                }
+//            }else{
+//                self.view.userInteractionEnabled = YES;
+//                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
+//                [self.configBtn stopAnimation];
+//            }
+//        }];
     }
 }
 - (void) gotoConfigService
@@ -289,31 +302,44 @@
     [self.serviceField regsinField];
     
     NSString *serverStr = self.serviceField.textValue;
-    serverStr = [self combineService:serverStr];
+//    serverStr = [self combineService:serverStr];
     
-    [HTTPCLIENT configServiceUrl:serverStr withParams:@{} completionHandler:^(id object, NSError *error) {
+    [GTServiceRequest configService:serverStr completionHandler:^(id object, NSError *error) {
         self.view.userInteractionEnabled = YES;
         if (!error) {
-            NSDictionary *dataDic = [object objForKey:@"Data"];
-            NSDictionary *dic = @{@"companyName":[dataDic objForKey:@"Title"]?:@"",@"companyLogo":[dataDic objForKey:@"Logo"]?:@"",@"loginBackImage":[dataDic objForKey:@"LogonBg"]?:@""};
-            [GTCompanyInfo storeCompanyInfo:dic];
-            
-            [[GTConfigManage sharedInstance] setFileServerURL:serverStr];
-            [ConfigManage savePreviousServerUrl:serverStr];
             [self goBack];
         }else{
-            if (error.userInfo[kDMErrorUserInfoMsgCode] && [serverStr hasPrefix:@"https"]) {
-                NSLog(@"errHttps:%@",error.domain);
-                [GTConfigManage sharedInstance].isHttps = NO;
+            if (error.userInfo[kDMErrorUserInfoMsgCode] && [GTConfigManage sharedInstance].isHttps == NO) {
                 [self configAction];
             }else{
                 [self.configBtn stopAnimation];
-                [GTConfigManage sharedInstance].isHttps = YES;
-                NSLog(@"errHttp:%@",error.domain);
-                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
             }
         }
+
     }];
+//    [HTTPCLIENT configServiceUrl:serverStr withParams:@{} completionHandler:^(id object, NSError *error) {
+//        self.view.userInteractionEnabled = YES;
+//        if (!error) {
+//            NSDictionary *dataDic = [object objForKey:@"Data"];
+//            NSDictionary *dic = @{@"companyName":[dataDic objForKey:@"Title"]?:@"",@"companyLogo":[dataDic objForKey:@"Logo"]?:@"",@"loginBackImage":[dataDic objForKey:@"LogonBg"]?:@""};
+//            [GTCompanyInfo storeCompanyInfo:dic];
+//            
+//            [[GTConfigManage sharedInstance] setFileServerURL:serverStr];
+//            [ConfigManage savePreviousServerUrl:serverStr];
+//            [self goBack];
+//        }else{
+//            if (error.userInfo[kDMErrorUserInfoMsgCode] && [serverStr hasPrefix:@"https"]) {
+//                NSLog(@"errHttps:%@",error.domain);
+//                [GTConfigManage sharedInstance].isHttps = NO;
+//                [self configAction];
+//            }else{
+//                [self.configBtn stopAnimation];
+//                [GTConfigManage sharedInstance].isHttps = YES;
+//                NSLog(@"errHttp:%@",error.domain);
+//                [GTRemindView showWithMesssage:error.userInfo[kDMErrorUserInfoMsgKey]];
+//            }
+//        }
+//    }];
 
 }
 - (void) forgetDomainAction

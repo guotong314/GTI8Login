@@ -21,5 +21,6 @@
 #import <GTNetWork/GTHttpClient.h>
 
 #define DomainName   @"domainName"
+#define domainStr  @".atuyun.cn"
 
 #endif
