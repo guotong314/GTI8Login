@@ -250,7 +250,7 @@
 {
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/register"]];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/register&webType=1"];
+    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/register&webType=3"];
 }
 - (void) configAction
 {
@@ -346,7 +346,7 @@
 {
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.atuyun.cn/index.html#/findDomain"]];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/findDomain&webType=1"];
+    [GTBaseRule openURL:@"dm://showWebView?url=https://www.atuyun.cn/index.html#/findDomain&webType=3"];
 
 }
 /*
