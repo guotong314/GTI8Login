@@ -11,3 +11,8 @@
 NSInteger const kDMErrorNormalCode      = -1;
 NSString* const kDMErrorUserInfoMsgKey = @"errorMsg";
 NSString* const kDMErrorUserInfoMsgCode = @"errorCode";
+
+NSString* const kDMAPPIdentify = @"appIdentity";
+NSString* const kDMAPPIdentify_Atuyun = @"atuyun";
+NSString* const kDMAPPIdentify_BocheOA = @"bocheoa";
+NSString* const kDMAPPIdentify_Standard = @"standard";
