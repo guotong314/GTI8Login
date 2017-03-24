@@ -65,7 +65,7 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
 //        self.userAccountField.ly_placeholder = @"用户名";
 //    }
     self.userAccountField.ly_placeholder = @"请输入手机号或用户名";
-    self.userPasswordField.ly_placeholder = @"密码";
+    self.userPasswordField.ly_placeholder = @"请输入密码";
     
     @weakify(self);
     self.userAccountField.shouldReturnBlock = ^(){
