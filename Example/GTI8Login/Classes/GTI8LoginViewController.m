@@ -57,13 +57,14 @@ NSString * const kUserKey_previousUserAccount = @"previousUserAccountkey";
     
     [self setupView];
     
-    NSString *appIdentify = [ConfigManage getSystemConfig:kDMAPPIdentify];
+//    NSString *appIdentify = [ConfigManage getSystemConfig:kDMAPPIdentify];
     
-    if ([appIdentify isEqualToString:kDMAPPIdentify_Atuyun]) {
-        self.userAccountField.ly_placeholder = @"请输入手机号";
-    }else{
-        self.userAccountField.ly_placeholder = @"用户名";
-    }
+//    if ([appIdentify isEqualToString:kDMAPPIdentify_Atuyun]) {
+//        self.userAccountField.ly_placeholder = @"请输入手机号或用户名";
+//    }else{
+//        self.userAccountField.ly_placeholder = @"用户名";
+//    }
+    self.userAccountField.ly_placeholder = @"请输入手机号或用户名";
     self.userPasswordField.ly_placeholder = @"密码";
     
     @weakify(self);

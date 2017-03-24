@@ -194,6 +194,9 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if (self.domainName && self.domainName.length) {
